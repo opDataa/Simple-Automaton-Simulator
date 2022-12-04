@@ -53,6 +53,11 @@ edge.lamdaEdge{
     text-color: gray;
 }
 
+edge.lambdaEdgeSelected{
+    text-color: orange;
+}
+
+
 edge.selfloop{
     text-alignment: under;
     text-offset: 60px, -120px;

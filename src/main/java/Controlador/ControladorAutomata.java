@@ -48,7 +48,11 @@ import org.graphstream.ui.spriteManager.SpriteManager;
  * @author Jtorr
  */
 public class ControladorAutomata implements ActionListener {
-    
+    /**
+     * λ
+     */
+    private final Character LAMDA = 'λ';
+
     private final String DEFAULT__STYLE_SHEET = "styleX";
     // View
     private String stringInput = null;
@@ -125,8 +129,8 @@ public class ControladorAutomata implements ActionListener {
                         // Reset the stepIndex
                         this.stepIndex = 0;
                         // Select the initial node
-                        this.showCurrentOperation(0);
-                         
+                        //this.showCurrentOperation(0);
+                         this.showCurrentOperation_v2(0);
                     }
                 }
                 break;                
@@ -136,7 +140,7 @@ public class ControladorAutomata implements ActionListener {
                 if (this.automataOperations==null) {System.out.println("ERROR: To show 'step by step' the 'validation' process, first 'RUN' the Automata.");}
                 else{
                     if(this.stepIndex<=0){ System.out.println("ERROR: Your cant go back more because you are already at the very begining!"); }
-                    else{ showCurrentOperation(-1); }
+                    else{ showCurrentOperation_v2(-1); }
                 }
                 
                 break;                     
@@ -144,7 +148,7 @@ public class ControladorAutomata implements ActionListener {
                 if (this.automataOperations==null) {System.out.println("ERROR: To show 'step by step' the 'validation' process, first 'RUN' the Automata.");}
                 else{
                     if(this.stepIndex+1>=this.automataOperations.size()){ System.out.println("ERROR: Your cant go more further because you are already at the very end!"); }
-                    else{ showCurrentOperation(+1); }
+                    else{ showCurrentOperation_v2(+1); }
                 }
                     
                 break;
@@ -500,6 +504,7 @@ public class ControladorAutomata implements ActionListener {
     }
     
     private void selectNode(Node nodeX){
+        System.out.println("SELECTED: "+nodeX.toString());
         nodeX.setAttribute("ui.color", 0.5f);
         nodeX.setAttribute("ui.size", 35);
         
@@ -512,8 +517,10 @@ public class ControladorAutomata implements ActionListener {
     }
     
     private void disselectNode(Node nodeX){
-        this.prevNode.setAttribute("ui.color", 0.0f);
-        this.prevNode.setAttribute("ui.size", 30);
+        System.out.println("DIS-SELECTED: "+nodeX.toString());
+
+        nodeX.setAttribute("ui.color", 0.0f);
+        nodeX.setAttribute("ui.size", 30);
         
         
         // If that node has a selfLoop, the redimension will affect the Edge but not its text, 
@@ -541,6 +548,18 @@ public class ControladorAutomata implements ActionListener {
         edgeX.setAttribute("ui.color", 0.0f);
         edgeX.setAttribute("ui.size", 1);
     }
+    
+
+    private void selectLambdaEdge(){
+        this.selectEdge(this.lambdaEdge);
+        this.lambdaEdge.setAttribute("ui.class", "lambdaEdgeSelected");
+    }
+    private void disselectLambdaEdge(){
+        this.disselectEdge(this.lambdaEdge);
+        this.lambdaEdge.setAttribute("ui.class", "lambdaEdge");
+        this.lambdaEdge = null;
+    }
+    
     // UTILs
     private boolean isNodeOperation(String operationX){
         return (!isEndingOperation(operationX) && !isEdgeOperation(operationX));
@@ -570,10 +589,159 @@ public class ControladorAutomata implements ActionListener {
     
 
     
+    private Edge lambdaEdge = null;
+    
+    /**
+     *  2 Partes:
+     *    1) Borra la 'animacion' anterior
+     *    2) Dibuja la 'animacion' actual.
+     * --> Cada parte difiere segun el sentido del avanze (backwards/fordwards).
+     * NOTA-SIMBOLOGIA:
+     *  A [1] B := nodoA y nodoB estan conectados por una transaccion de comando :=  '1' (sentido: A-->B).
+     *  El asterisco << * >>, indica en que elemento se encuentra en la iteracion actual ==> A* [1] B := actualmente nos encontramos en el NodoA.
+     * 
+     * @param increment 0 (first time); -1 (backwards); +1 (fordwards) 
+     * 
+     */
+    private void showCurrentOperation_v2(int increment){
+        
+        // CLEAR: previous Animation
+        String prevOperationX =  this.automataOperations.get(this.stepIndex);   
+        String currentOperationX = this.automataOperations.get(this.stepIndex+increment);
+
+        
+        if(lambdaEdge!=null){
+           this.disselectLambdaEdge();
+        }
+        
+        
+        
+        
+        // FORDWARDS (+1)
+        if(increment>0){
+            
+            // Node
+            if (this.isNodeOperation(prevOperationX)){
+                // A <CX> A B*  (A --> lamnda --> B)
+                // A [1]* B
+                // A <CX>* B
+                if (this.isEndingOperation(currentOperationX)==false){
+                    Node prevNodeX = this.graphStream.getNode(prevOperationX);
+                    this.disselectNode(prevNodeX); 
+                    
+                    
+                    
+                    // A <CX> A B* (lamda)
+                    if (this.isNodeOperation(currentOperationX)){
+                        this.lambdaEdge = prevNodeX.getEdgeBetween(currentOperationX);
+                        this.selectLambdaEdge();
+                    }
+                }
+               
+                
+
+                
+            }
+            // Edge
+            else if (this.isEdgeOperation(prevOperationX)){
+                 // A [1] B*
+                String prevNode_name = this.automataOperations.get(this.stepIndex-1);
+                String nextNode_name = this.automataOperations.get(this.stepIndex+1);
+                String edgeX_id = this.genEdgeId(prevNode_name, prevOperationX.charAt(1), nextNode_name);
+               
+                Edge edgeX = this.graphStream.getEdge(edgeX_id);
+                
+                this.disselectEdge(edgeX);
+                
+                                
+                
+            }
+            // Special-Operations (Valid: ends; Invalid: rollback)
+            else if (this.isEndingOperation(prevOperationX)){    
+                // A <CX> B*
+                this.spriteToDetach.detach(); 
+                this.spriteToDetach.setAttribute("ui.hide" );
+                this.spriteToDetach = null;
+                
+                String prevNode_name = this.automataOperations.get(this.stepIndex-1); 
+                Node prevNodeX = this.graphStream.getNode(prevNode_name);
+                this.disselectNode(prevNodeX);
+                
+                
+                
+                // A <CX> <BX>  (???)
+
+            }
+            
+        }
+        // BACKWARDS (-1)
+        else if (increment<0){
+            
+            
+        }
+        
+        
+        
+        
+        // DRRAW: current Animation
+        this.stepIndex+= increment;
+        
+        
+        // FORDWARDS (+1) /  BACKWARDS (-1)
+        if (true){
+                  
+            // Node
+            if (this.isNodeOperation(currentOperationX)){
+                // A* [1] B
+                Node nodeX = this.graphStream.getNode(currentOperationX);
+                this.selectNode(nodeX);
+                
+              
+                
+            }
+            // Edge
+            else if (this.isEdgeOperation(currentOperationX)){
+                // A [1]* B
+                String prevNode_name = this.automataOperations.get(this.stepIndex-1);
+                String nextNode_name = this.automataOperations.get(this.stepIndex+1);
+                String edgeX_id = this.genEdgeId(prevNode_name, currentOperationX.charAt(1), nextNode_name);
+               
+                Edge edgeX = this.graphStream.getEdge(edgeX_id);
+    
+                this.selectEdge(edgeX);
+            }
+            // Special-Operations (Valid: ends; Invalid: rollback)
+            else if (this.isEndingOperation(currentOperationX)){
+                String prevNode_name = this.automataOperations.get(this.stepIndex-1);
+
+                switch(currentOperationX){
+                    case AbstractAutomata.OPERATION_CODE__FINAL_NODE_VALID:
+                        this.spriteToDetach   = this.spritesDict.get("finalStateValid");
+                        break;
+                    case AbstractAutomata.OPERATION_CODE__FINAL_NODE_INVALID:
+                        this.spriteToDetach  = this.spritesDict.get("finalStateInvalid");
+                        break;
+                    case AbstractAutomata.OPERATION_CODE__COMMAND_INVALID:
+                        this.spriteToDetach  = this.spritesDict.get("invalidCommand");
+                        break;
+                }
+                
+                this.spriteToDetach.attachToNode(prevNode_name);  
+                this.spriteToDetach.removeAttribute("ui.hide");
+            }
+            
+            
+        }
+
+        
+        
+    }
+    
     
     
     
     // 'Look and Feel'
+    
     
     
     // The step to step System also remarks the current command in the textInput.
@@ -600,4 +768,6 @@ public class ControladorAutomata implements ActionListener {
         this.controlPane.jTextFieldCommandInput.setText(formattedString);
 
     }
+
+
 }

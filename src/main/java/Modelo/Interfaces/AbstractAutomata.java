@@ -287,6 +287,7 @@ public abstract class AbstractAutomata {
      * @see #runAutomata(java.lang.String) 
      */
     public ArrayList<String> popOperationsList(){
+        System.out.println("OPERATIONS: " + this.operationsList_str);
         final String SPACE_REGREX = "(?= )";
         //ArrayList<String> clonedList = (ArrayList<String>) this.operationsList.clone();
         String[] operationsArray = this.operationsList_str.trim().split(SPACE_REGREX);
