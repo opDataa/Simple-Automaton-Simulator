@@ -1,16 +1,18 @@
-node.defaultNode { 
+node { 
     shape:circle; 
-    fill-color:#919EAE;
-    size:40px;
+
+    size-mode: dyn-size;
+    fill-mode: dyn-plain;
+    fill-color:#919EAE, red;
+    size:30px;
     text-size:20px;
     text-alignment:center;
     stroke-mode: plain;
     stroke-color: black;
 }
 node.initialNode{
-
- icon-mode: at-left;
- icon: url('arrow.png');
+    icon-mode: at-left;
+    icon: url('arrow.png');
 }
 node.finalNode{
     shadow-mode: gradient-radial; 
@@ -19,11 +21,23 @@ node.finalNode{
     shadow-offset: 0px;
 
 }
+node.deadNode{ 
+    fill-color: #F7DF74;
+}
 
+node.selectedNode{
+    size:50;
+}
 
-edge.defaultEdge {
-    text-size:20px;
-    text-alignment:along;
+edge {
+    shape: angle;
+    text-alignment: along;
+    size-mode: dyn-size;
+    size:1px;
+    fill-mode: dyn-plain;
+    fill-color: black, red;
+    text-size:30px;
+    
     arrow-shape: arrow;
     arrow-size: 20px, 4px;
     text-style: bold;
@@ -34,20 +48,45 @@ edge.dottedEdge{
     fill-color:gray;
 }
 
-node.deadNode{ 
-    shape:circle; 
-    fill-color:#F7DF74;
-    size:40px;
-    text-size:20px;
-    text-alignment:center;
-    stroke-mode: plain;
-    stroke-color: black;
+edge.lamdaEdge{
+    text-alignment: under;
+    text-color: gray;
+}
+
+edge.selfloop{
+    text-alignment: under;
+    text-offset: 60px, -120px;
+}
+edge.selfloopSelected{
+    text-alignment: under;
+    text-offset: 160px, -220px;
 }
 
 
-sprite#InitialStateArrow{
+sprite{
         sprite-orientation:node0;
-	size: 42px, 32px;
 	fill-mode: image-scaled;
+}
+
+sprite.InitialStateArrow{
+	size: 42px, 32px;
 	fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\initialStateArrow4.png');
 }
+
+
+sprite.finalStateInvalid{
+	size: 32px, 32px;
+
+	fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\invalid.png');
+}
+
+sprite.finalStateValid{
+	size: 32px, 32px;
+	fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\valid.png');
+}
+
+sprite.invalidCommand{
+	size: 32px, 32px;
+	fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\invalidCommand.png');
+}
+

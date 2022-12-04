@@ -15,7 +15,10 @@ import java.util.logging.Logger;
  * @author Jtorr
  */
 // One initialState; One o more finalStates; UNIQUE RESTRAINT: <initialState, command>.
-public class AutomataDeterminista extends AbstractAutomata{
+public class AutomataDeterminista extends AbstractAutomata {
+    
+   
+    
     
     
     @Override
@@ -23,21 +26,32 @@ public class AutomataDeterminista extends AbstractAutomata{
         char[ ] commands = inputString.toCharArray();      
         final String initialState = this.getInitialState();  
         String stateX = initialState; //int estado = 0 ; //El estado inicial es el 0
-        System.out.println("inputString: "+inputString);
-        System.out.print("-->"+stateX);
+        //System.out.println("inputString: "+inputString);
+        //System.out.print("-->"+stateX);
 
         
+        // A[C]B
+        
+
+
+        super.addOperation(stateX); // A
         for(int i=0; i<commands.length; i++) {     
             
             stateX = this.getNextState(stateX,commands[i]);
-            
-            if(stateX==null){ break; }
-            else{ System.out.print(" => "+stateX); }
+            super.addOperation("["+commands[i]+"]"); // [C]
+            if(stateX==null){
+                super.addOperation(OPERATION_CODE__COMMAND_INVALID); // {CX}
+
+                break;
+            }
+            else{ 
+                super.addOperation(stateX);    // B/A
+            }                               
         }
         
         boolean isValid = isFinalState(stateX);
-        if (isValid){ System.out.print(" : VALID"); }
-        else{ System.out.print(" : FAIL"); }
+        if (isValid){ super.addOperation(OPERATION_CODE__FINAL_NODE_VALID); } // {VALID}
+        else{super.addOperation(OPERATION_CODE__FINAL_NODE_INVALID); }            // {INVALID}
         
         return isValid;
     }
@@ -88,6 +102,8 @@ public class AutomataDeterminista extends AbstractAutomata{
 
         return alreadyExistedTransaction;
     }
+
+  
 }
 
 

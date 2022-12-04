@@ -1,0 +1,11 @@
+TIPO: AFD
+ESTADOS: q0 q1 q2 
+INICIAL: A 
+FINALES: B
+TRANSICIONES: 
+A '1' B
+B '1' C
+A '0' B
+A B 
+C D
+FIN

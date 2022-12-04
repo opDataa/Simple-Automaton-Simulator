@@ -5,6 +5,7 @@
 package Modelo.saveLoad;
 
 import Modelo.AutomataDeterminista;
+import Modelo.AutomataNoDeterminista;
 import Modelo.Interfaces.AbstractAutomata;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,10 +22,8 @@ public class FileLoader {
     private final String DATASET_ABSOLUTE_PATH = this.getClass().getProtectionDomain().getCodeSource().getLocation().toString().split("/target/classes/")[0].split("file:/")[1].replace("/", "\\")+"\\src\\main\\java\\dataset\\";
 
     private static final String SPACE_REGREX = "(?= )";
-    private static final String DELIMITER__NUM_STATES = "ESTADOS:";
-    private static final String DELIMITER__INITIAL_STATES = "INICIAL:";
-    private static final String DELIMITER__FINAL_STATES = "FINALES:";
-    private static final String DELIMITER__START_TRANSACTIONS = "TRANSICIONES:";
+
+    
     public static final String DELIMITER__END_OF_FILE = "FIN";
     private static final String CHAR_REGREX = "(?=('\\w'))"; // Funciona??
     
@@ -84,10 +83,17 @@ public class FileLoader {
     }
 */
     
+    
+        private static final String DELIMITER__TIPO_AUTOMATA = "TIPO:"; //AFND(AutamtaNoDeterminista) ; AFD (AutomataDeterminista)
+    private static final String DELIMITER__NUM_STATES = "ESTADOS:";
+    private static final String DELIMITER__INITIAL_STATES = "INICIAL:";
+    private static final String DELIMITER__FINAL_STATES = "FINALES:";
+    private static final String DELIMITER__START_TRANSACTIONS = "TRANSICIONES:";
+    
     /**
-     * TODO [ASK-TEACHER]: Como diferenciar un automataDeterminista de uno no determinista en el fichero a importar??? 
+     * TODO-DONE [ASK-TEACHER]: Como diferenciar un automataDeterminista de uno no determinista en el fichero a importar??? 
      * IMPORTANTE: Por ahora, solo genera 'AutomataDeterminista's .
-     * IMPORTANTE [DECISION-DE-DISEÑO]: Los automatas no pueden intanciar nodos por separado; solo {@link Transaction}'s
+     * IMPORTANTE [DESIGN-DESITION]: Los automatas no pueden instanciar nodos por separado; solo {@link Modelo.Interfaces.Transaction}'s
      * 
      * @param fileX
      * @return {@link AbstractAutomata}
@@ -98,49 +104,83 @@ public class FileLoader {
         Scanner scannerX = new Scanner(fileX);
         String lineX = scannerX.nextLine();
 
-        AbstractAutomata automataX = new AutomataDeterminista();
+        AbstractAutomata automataX = null; // = new AutomataDeterminista();
+        
         boolean startSavingTransactions = false;    
+        boolean startSavingTransactionsLAMBDA = false;
         int pointIndex = 0;
         int numPoints = 0; //DIMENSION
         String statesList[];
         
-        while(scannerX.hasNext() && lineX!=DELIMITER__END_OF_FILE){
-                      
-            if(startSavingTransactions == true){
-                
-                // [TRANSACTION-FORMAT]:= [EJ] q0 '0' q1 <===> <initialState, command, finalState>
-                String[] rawData = lineX.trim().split(SPACE_REGREX);
-                String initialState = rawData[0];
-                Character command = rawData[1].trim().split(CHAR_REGREX)[0].charAt(0);;
-                String finalState = rawData[2];
-                
-                // Add Transactions
-                automataX.addTransaction(initialState, command, finalState);
-            }
-            else{
-                if (lineX.contains(DELIMITER__NUM_STATES)){
-                    statesList = lineX.trim().split(DELIMITER__NUM_STATES)[1].split(SPACE_REGREX);                      
-                }
-                else if (lineX.contains(DELIMITER__INITIAL_STATES)){
-                    String initialStates[] = lineX.trim().split(DELIMITER__INITIAL_STATES)[1].split(SPACE_REGREX);                      
-                    for(String initialStateX:initialStates){
-                        automataX.addInitialState(initialStateX);
-                    }
-                }        
-                else if (lineX.contains(DELIMITER__FINAL_STATES)){
-                    String finalStates[] = lineX.trim().split(DELIMITER__FINAL_STATES)[1].split(SPACE_REGREX);                      
-                    for(String initialStateX:finalStates){
-                        automataX.addFinalState(initialStateX);
-                    }
-                }
-                else if (lineX.compareTo(DELIMITER__START_TRANSACTIONS)==0){
-                    startSavingTransactions = true;
-                }        
-            }
-            
-            lineX = scannerX.nextLine();                     
-        }
         
+        // TIPO: (AFD/AFND)
+        if (lineX.contains(DELIMITER__TIPO_AUTOMATA)){
+            String automataType = lineX.trim().split(DELIMITER__TIPO_AUTOMATA)[1].trim();                      
+            switch(automataType.toUpperCase()){
+                case "AFD":
+                    automataX = new AutomataDeterminista();  
+                    break;                            
+                case "AFND":
+                    automataX = new AutomataNoDeterminista();
+                break;
+            }
+ 
+            lineX = scannerX.nextLine();   
+            
+            while(scannerX.hasNext() && lineX!=DELIMITER__END_OF_FILE){
+
+                if(startSavingTransactions == true){                     
+                    // [TRANSACTION-FORMAT]:= [EJ] q0 '0' q1 <===> <initialState, command, finalState>
+                    String[] rawData = lineX.trim().split(SPACE_REGREX);
+
+                    switch(rawData.length){
+
+                        case 3: // Normal Transactions
+                            String initialState = rawData[0].trim();
+                            Character command = rawData[1].trim().charAt(1);//rawData[1].trim().split(CHAR_REGREX)[0].charAt(0);;
+                            String finalState = rawData[2].trim();
+                            // Add Transactions
+                            automataX.addTransaction(initialState, command, finalState);  
+                        break;
+
+                        case 2: // Lambda Transactions
+                            String initialStateLAMDA = rawData[0].trim();
+                            String finalStateLAMBDA = rawData[1].trim();
+                            // Add Transactions
+                            AutomataNoDeterminista a = (AutomataNoDeterminista) automataX;
+                            a.addLambdaTransaction(initialStateLAMDA, finalStateLAMBDA); // TODO: este casteo es peligroso y puede dar errores.
+                            break;
+
+                        default:
+                            System.out.println("ERR: invalid Transaction format: "+ lineX);
+                            break;
+                    }
+                }
+                else{
+                    if (lineX.contains(DELIMITER__NUM_STATES)){
+                        statesList = lineX.trim().split(DELIMITER__NUM_STATES)[1].split(SPACE_REGREX);                      
+                    }
+                    else if (lineX.contains(DELIMITER__INITIAL_STATES)){
+                        String initialStates[] = lineX.trim().split(DELIMITER__INITIAL_STATES)[1].split(SPACE_REGREX);                      
+                        for(String initialStateX:initialStates){
+                            automataX.addInitialState(initialStateX.trim());
+                        }
+                    }        
+                    else if (lineX.contains(DELIMITER__FINAL_STATES)){
+                        String finalStates[] = lineX.trim().split(DELIMITER__FINAL_STATES)[1].split(SPACE_REGREX);                      
+                        for(String initialStateX:finalStates){
+                            automataX.addFinalState(initialStateX.trim());
+                        }
+                    }
+                    else if (lineX.contains(DELIMITER__START_TRANSACTIONS)){
+                        startSavingTransactions = true;
+                    }        
+                }
+
+                lineX = scannerX.nextLine();                     
+            }
+        }
+        else { System.out.println("ERR -> Incorrect File Format: No autoamtaType found!"); } 
             
        return automataX;
     }

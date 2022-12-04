@@ -51,4 +51,12 @@ public class Transaction {
         public void addFinalStates(HashSet<String> finalStates){this.finalStates.addAll(finalStates);}
         public void addFinalState(String finalState){this.finalStates.add(finalState);}
 
+        
+        @Override
+        public String toString(){
+           String finalStates_str = "";
+           for(String finalStateX : this.finalStates){finalStates_str += finalStateX+" ";}
+
+           return this.initialState+" ==[ "+ this.command+" ]=> "+finalStates_str;
+        }
 }
