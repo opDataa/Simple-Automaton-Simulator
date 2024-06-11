@@ -98,55 +98,55 @@ sprite{
 
 sprite.InitialStateArrow{
     size: 42px, 32px;
-    fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\initialStateArrow.png');
+    fill-image: url('StyleSheets\initialStateArrow.png');
 }
 
 
 sprite.finalStateInvalid{
     size: 32px, 32px;
-    fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\initialStateArrow.png');
+    fill-image: url('StyleSheets\initialStateArrow.png');
 }
 
 sprite.finalStateValid{
     size: 32px, 32px;
-    fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\initialStateArrow.png');
+    fill-image: url('StyleSheets\initialStateArrow.png');
 }
 
-sprite.arrow_0{  z-index: -1; fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\arrow_0.png'); }
-sprite.arrow_1{  z-index: -1; fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\arrow_9.png'); }
-sprite.arrow_2{  z-index: -1; fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\arrow_8.png'); }
-sprite.arrow_3{  z-index: -1; fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\arrow_7.png'); }
-sprite.arrow_4{  z-index: -1; fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\arrow_6.png'); }
-sprite.arrow_5{  z-index: -1; fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\arrow_5.png'); }
-sprite.arrow_6{  z-index: -1; fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\arrow_4.png'); }
-sprite.arrow_7{  z-index: -1; fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\arrow_3.png'); }
-sprite.arrow_8{  z-index: -1; fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\arrow_2.png'); }
-sprite.arrow_9{  z-index: -1; fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\arrow_1.png'); }
+sprite.arrow_0{  z-index: -1; fill-image: url('StyleSheets\rotated\arrow_0.png'); }
+sprite.arrow_1{  z-index: -1; fill-image: url('StyleSheets\rotated\arrow_9.png'); }
+sprite.arrow_2{  z-index: -1; fill-image: url('StyleSheets\rotated\arrow_8.png'); }
+sprite.arrow_3{  z-index: -1; fill-image: url('StyleSheets\rotated\arrow_7.png'); }
+sprite.arrow_4{  z-index: -1; fill-image: url('StyleSheets\rotated\arrow_6.png'); }
+sprite.arrow_5{  z-index: -1; fill-image: url('StyleSheets\rotated\arrow_5.png'); }
+sprite.arrow_6{  z-index: -1; fill-image: url('StyleSheets\rotated\arrow_4.png'); }
+sprite.arrow_7{  z-index: -1; fill-image: url('StyleSheets\rotated\arrow_3.png'); }
+sprite.arrow_8{  z-index: -1; fill-image: url('StyleSheets\rotated\arrow_2.png'); }
+sprite.arrow_9{  z-index: -1; fill-image: url('StyleSheets\rotated\arrow_1.png'); }
 
-sprite.valid_0{ fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\valid_1.png'); }
-sprite.valid_1{ size: 25px, 25px; fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\valid_0.png'); }
-sprite.valid_2{ fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\valid_2.png'); }
-sprite.valid_3{ fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\valid_3.png'); }
-sprite.valid_4{ fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\valid_4.png'); }
-sprite.valid_5{ fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\valid_5.png'); }
-sprite.valid_6{ size: 25px, 25px; fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\valid_6.png'); }
-sprite.valid_7{ fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\valid_7.png'); }
-sprite.valid_8{ fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\valid_8.png'); }
-sprite.valid_9{ fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\valid_9.png'); }
+sprite.valid_0{ fill-image: url('StyleSheets\rotated\valid_1.png'); }
+sprite.valid_1{ size: 25px, 25px; fill-image: url('StyleSheets\rotated\valid_0.png'); }
+sprite.valid_2{ fill-image: url('StyleSheets\rotated\valid_2.png'); }
+sprite.valid_3{ fill-image: url('StyleSheets\rotated\valid_3.png'); }
+sprite.valid_4{ fill-image: url('StyleSheets\rotated\valid_4.png'); }
+sprite.valid_5{ fill-image: url('StyleSheets\rotated\valid_5.png'); }
+sprite.valid_6{ size: 25px, 25px; fill-image: url('StyleSheets\rotated\valid_6.png'); }
+sprite.valid_7{ fill-image: url('StyleSheets\rotated\valid_7.png'); }
+sprite.valid_8{ fill-image: url('StyleSheets\rotated\valid_8.png'); }
+sprite.valid_9{ fill-image: url('StyleSheets\rotated\valid_9.png'); }
 
-sprite.invalid_0{ size: 25px, 25px; fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\invalid_0.png'); }
-sprite.invalid_1{ fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\invalid_1.png'); }
-sprite.invalid_2{ fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\invalid_2.png'); }
-sprite.invalid_3{ fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\invalid_3.png'); }
-sprite.invalid_4{ fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\invalid_4.png'); }
-sprite.invalid_5{ size: 25px, 25px; fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\invalid_5.png'); }
-sprite.invalid_6{ fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\invalid_6.png'); }
-sprite.invalid_7{ fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\invalid_7.png'); }
-sprite.invalid_8{ fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\invalid_8.png'); }
-sprite.invalid_9{ fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\rotated\invalid_9.png'); }
+sprite.invalid_0{ size: 25px, 25px; fill-image: url('StyleSheets\rotated\invalid_0.png'); }
+sprite.invalid_1{ fill-image: url('StyleSheets\rotated\invalid_1.png'); }
+sprite.invalid_2{ fill-image: url('StyleSheets\rotated\invalid_2.png'); }
+sprite.invalid_3{ fill-image: url('StyleSheets\rotated\invalid_3.png'); }
+sprite.invalid_4{ fill-image: url('StyleSheets\rotated\invalid_4.png'); }
+sprite.invalid_5{ size: 25px, 25px; fill-image: url('StyleSheets\rotated\invalid_5.png'); }
+sprite.invalid_6{ fill-image: url('StyleSheets\rotated\invalid_6.png'); }
+sprite.invalid_7{ fill-image: url('StyleSheets\rotated\invalid_7.png'); }
+sprite.invalid_8{ fill-image: url('StyleSheets\rotated\invalid_8.png'); }
+sprite.invalid_9{ fill-image: url('StyleSheets\rotated\invalid_9.png'); }
 
 sprite.invalidCommand{
     size: 32px, 32px;
-    fill-image: url('C:\Users\Jtorr\Documents\NetBeansProjects\Automatas\src\main\java\StyleSheets\invalidCommand.png');
+    fill-image: url('StyleSheets\invalidCommand.png');
 }
 
