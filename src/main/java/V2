@@ -1,0 +1,8 @@
+ Version 2.0 [CAMBIOS]
+    - Se ha corregido un error que impedía acceder a las rutas absolutas (antes no ocurria)
+    - Se ha agregado la clase 'FileFormatTranslator' que toma como idea del patrÓn "Adapter".
+      Su uso se limita a poder leer el nuevo formato en que se representan los autómatas.
+      Para ello (en base a un autOmata en el nuevo formato) crea un archivo temporal traducido al formato antiguo.
+
+
+       

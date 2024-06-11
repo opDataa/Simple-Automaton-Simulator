@@ -1,0 +1,84 @@
+TIPO: AFND
+ESTADOS: A B C D E F G H I J K L M N O P
+INICIAL: A
+FINALES: P
+TRANSICIONES:
+A '<' B
+B 'h' C
+C 't' D
+D 'm' E 
+E 'l' F 
+F '>' G
+G 'q' G
+G 'w' G
+G 'e' G
+G 'r' G
+G 't' G
+G 'y' G
+G 'u' G
+G 'i' G
+G 'o' G
+G 'p' G
+G 'a' G
+G 's' G
+G 'd' G
+G 'f' G
+G 'g' G
+G 'h' G
+G 'j' G
+G 'k' G
+G 'l' G
+G 'ñ' G
+G 'z' G
+G 'x' G
+G 'c' G
+G 'v' G
+G 'b' G
+G 'n' G
+G 'm' G
+G 'Q' G
+G 'W' G
+G 'E' G
+G 'R' G
+G 'T' G
+G 'Y' G
+G 'U' G
+G 'I' G
+G 'O' G
+G 'P' G
+G 'A' G
+G 'S' G
+G 'D' G
+G 'F' G
+G 'G' G
+G 'H' G
+G 'J' G
+G 'K' G
+G 'L' G
+G 'Ñ' G
+G 'Z' G
+G 'X' G
+G 'C' G
+G 'V' G
+G 'B' G
+G 'N' G
+G 'M' G
+G '<' G
+G '>' G
+G '_' G
+G ':' G
+G '"' G
+G ''' G
+G ';' G
+G '/' G
+H '<' I
+I '/' J
+J 'h' K
+K 't' L 
+L 'm' M 
+M 'l' N
+N '>' O
+TRANSICIONES LAMBDA:
+G H
+O P
+FIN

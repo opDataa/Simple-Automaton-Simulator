@@ -1,0 +1,12 @@
+TIPO: AFND
+ESTADOS: A B C D
+INICIAL: A
+FINALES: D
+TRANSICIONES: 
+A '0' A B
+A '1' A
+B '0' C
+B '1' C
+C '0' D
+C '1' D
+FIN

@@ -1,0 +1,14 @@
+TIPO: AFD
+ESTADOS: q0 q1 q2 MX
+INICIAL: q0
+FINALES: q1
+TRANSICIONES:
+q2 '1' MX
+q0 '1' q2 
+q0 '0' q1
+q1 '1' MX
+q1 '0' MX
+q2 '0' q1
+MX '0' MX
+MX '1' MX
+FIN
