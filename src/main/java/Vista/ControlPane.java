@@ -4,18 +4,28 @@
  */
 package Vista;
 
-import java.awt.Font;
+import java.awt.Component;
 import java.awt.GraphicsConfiguration;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 
 
 /**
- *
+ * View Class that is used to control an {@link Modelo.Interfaces.AbstractAutomata} representation and execution:
+ *  - Import the automata
+ *  - Text Input
+ *  - Extra visualization controls: 
+ *  ---> stopFit, reload, zoomout
+ *  - Direct Mode running
+ *  - Step by step running
+ *  --->  Next/Prev step of the automata travel through states/nodes
+ * 
+ * @see Controlador.ControladorAutomata
  * @author Jtorr
  */
 public class ControlPane extends javax.swing.JFrame {
@@ -29,8 +39,12 @@ public class ControlPane extends javax.swing.JFrame {
         // Hide scrollBars
         this.jScrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         this.jScrollPane1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-              
-        this.TEXT_INPUT__DEFAULT_CONTENT_TYPE = this.jTextFieldCommandInput.getContentType();
+
+        
+        this.jDialogHelp.setLocationRelativeTo(null);
+        this.jScrollPane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        this.jScrollPane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
         // Enables HTML Sytle
         //this.enableHTML();
 
@@ -39,18 +53,9 @@ public class ControlPane extends javax.swing.JFrame {
 
     }
 
-    private String TEXT_INPUT__DEFAULT_CONTENT_TYPE;
     
 
-    public void enableHTML(){
-        this.jTextFieldCommandInput.setContentType("text/html");
-        this.jTextFieldCommandInput.setEditable(false);
-    }
 
-    public void disableHTML(){
-        this.jTextFieldCommandInput.setEditable(true);
-        this.jTextFieldCommandInput.setContentType(TEXT_INPUT__DEFAULT_CONTENT_TYPE);
-    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -60,25 +65,149 @@ public class ControlPane extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDialogHelp = new javax.swing.JDialog();
+        jPanel8 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextPane1 = new javax.swing.JTextPane();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jButtonLoadAutomataFromFile = new javax.swing.JButton();
+        jButtonHelp = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextFieldCommandInput = new javax.swing.JTextPane();
-        jButtonLoadAutomataFromFile = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jButtonNextStep = new javax.swing.JButton();
         jButtonPrevStep = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        jButtonStopAutoFit = new javax.swing.JButton();
+        jButtonRefresh = new javax.swing.JButton();
+        jButtonZoomOut = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jButtonShowFinalSolution = new javax.swing.JButton();
         jButtonRunAutomata = new javax.swing.JButton();
 
+        jDialogHelp.setBackground(new java.awt.Color(51, 255, 51));
+        jDialogHelp.setMinimumSize(new java.awt.Dimension(735, 250));
+        jDialogHelp.setResizable(false);
+
+        jPanel8.setBackground(new java.awt.Color(255, 102, 102));
+        jPanel8.setMinimumSize(new java.awt.Dimension(708, 216));
+
+        jScrollPane2.setBackground(new java.awt.Color(71, 73, 75));
+
+        jTextPane1.setBackground(new java.awt.Color(71, 73, 75));
+        jTextPane1.setContentType("text/html"); // NOI18N
+        jTextPane1.setForeground(new java.awt.Color(204, 204, 204));
+        jTextPane1.setText("<html>\r\n  <head>\r\n\r\n  </head>\r\n  <body  style=\"margin-top: 0\">\r\n      \r<div> \n        <strong>Import Automaton:</strong> Permite importar un autómata usando un archivo de texto. Por defecto abre la carpeta \"dataset\".\n      <div>\n      <div> \n        <strong> \tText Input:</strong> Al presionar \"enter\", se ejecutará, por defecto, el modo \"directo\". \n\tPermite conocer el símbolo por el que se transcurre durante el modo \"step by step\". \n\tPara volver a poder introducir texto: hacer doble click.\n      <div>\n      <div> \n        <strong>Reload:</strong> Permite cambiar la disposición de los estados recargando el autómata. \n      <div>\n      <div> \n        <strong>StopFit:</strong> Congela el reposicionamiento de los estados.\n      <div>\n      <div> \n        <strong>ZoomOut:</strong> amplía el campo de visión. \n      <div>\n      <div> \n        <strong>Direct Mode:</strong> muestra directamente la solución.\n      <div>\n      <div> \n        <strong>Step by Step Mode:</strong> inicial el modo \"step by step\" (también se puede iniciar hacliendo click en las flechas), que permite ver paso a paso el recorrido que toma el autómata.\n      <div>\n       <div> \n         * Se pueden mover todos los grafos con las flechas del teclado (cuando se hace 'ZoomOut', a veces, hay nodos que quedan fuera de la pantalla).\n      <div>\n    </p>\r\n  </body>\r\n</html>\r\n");
+        jTextPane1.setAutoscrolls(false);
+        jTextPane1.setCaretColor(new java.awt.Color(204, 204, 204));
+        jTextPane1.setDisabledTextColor(new java.awt.Color(204, 204, 204));
+        jTextPane1.setFocusCycleRoot(false);
+        jTextPane1.setFocusable(false);
+        jTextPane1.setMaximumSize(new java.awt.Dimension(150, 550));
+        jTextPane1.setMinimumSize(new java.awt.Dimension(150, 550));
+        jTextPane1.setOpaque(false);
+        jTextPane1.setRequestFocusEnabled(false);
+        jTextPane1.setVerifyInputWhenFocusTarget(false);
+        jScrollPane2.setViewportView(jTextPane1);
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 696, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jDialogHelpLayout = new javax.swing.GroupLayout(jDialogHelp.getContentPane());
+        jDialogHelp.getContentPane().setLayout(jDialogHelpLayout);
+        jDialogHelpLayout.setHorizontalGroup(
+            jDialogHelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        jDialogHelpLayout.setVerticalGroup(
+            jDialogHelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setAlwaysOnTop(true);
+        setBackground(new java.awt.Color(71, 73, 75));
+        setResizable(false);
+
+        jPanel6.setBackground(new java.awt.Color(71, 73, 75));
+
+        jPanel4.setBackground(new java.awt.Color(204, 255, 204));
+
+        jButtonLoadAutomataFromFile.setBackground(new java.awt.Color(71, 73, 75));
+        jButtonLoadAutomataFromFile.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButtonLoadAutomataFromFile.setForeground(new java.awt.Color(204, 204, 204));
+        jButtonLoadAutomataFromFile.setText("Import Automaton");
+        jButtonLoadAutomataFromFile.setActionCommand("importAutomata");
+        jButtonLoadAutomataFromFile.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButtonLoadAutomataFromFile.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jButtonLoadAutomataFromFile.setVerifyInputWhenFocusTarget(false);
+        jButtonLoadAutomataFromFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLoadAutomataFromFileActionPerformed(evt);
+            }
+        });
+
+        jButtonHelp.setBackground(new java.awt.Color(255, 255, 255));
+        jButtonHelp.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButtonHelp.setForeground(new java.awt.Color(255, 51, 51));
+        jButtonHelp.setText("?");
+        jButtonHelp.setActionCommand("help");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButtonLoadAutomataFromFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonHelp, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButtonLoadAutomataFromFile, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButtonHelp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        jButtonLoadAutomataFromFile.getAccessibleContext().setAccessibleDescription("");
 
         jPanel1.setBackground(new java.awt.Color(204, 255, 204));
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(204, 0, 0));
-        jLabel1.setText("textInput");
+        jLabel1.setText("Text Input");
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        jTextFieldCommandInput.setFont(new java.awt.Font("Segoe UI", 0, 30)); // NOI18N
+        jTextFieldCommandInput.setBackground(new java.awt.Color(255, 255, 255));
+        jTextFieldCommandInput.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jTextFieldCommandInput.setFont(new java.awt.Font("Serif", 0, 30)); // NOI18N
+        jTextFieldCommandInput.setForeground(new java.awt.Color(0, 0, 0));
+        jTextFieldCommandInput.setCaretColor(new java.awt.Color(0, 0, 0));
+        jTextFieldCommandInput.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jScrollPane1.setViewportView(jTextFieldCommandInput);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -89,9 +218,7 @@ public class ControlPane extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -104,11 +231,11 @@ public class ControlPane extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jButtonLoadAutomataFromFile.setText("Import Automata");
-        jButtonLoadAutomataFromFile.setActionCommand("importAutomata");
-
         jPanel2.setBackground(new java.awt.Color(153, 255, 204));
 
+        jButtonNextStep.setBackground(new java.awt.Color(71, 73, 75));
+        jButtonNextStep.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jButtonNextStep.setForeground(new java.awt.Color(204, 204, 204));
         jButtonNextStep.setText("======>");
         jButtonNextStep.setActionCommand("nextStep");
         jButtonNextStep.addActionListener(new java.awt.event.ActionListener() {
@@ -117,8 +244,57 @@ public class ControlPane extends javax.swing.JFrame {
             }
         });
 
+        jButtonPrevStep.setBackground(new java.awt.Color(71, 73, 75));
+        jButtonPrevStep.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jButtonPrevStep.setForeground(new java.awt.Color(204, 204, 204));
         jButtonPrevStep.setText("<=====");
         jButtonPrevStep.setActionCommand("prevStep");
+
+        jPanel5.setBackground(new java.awt.Color(204, 255, 204));
+
+        jButtonStopAutoFit.setBackground(new java.awt.Color(71, 73, 75));
+        jButtonStopAutoFit.setForeground(new java.awt.Color(204, 204, 204));
+        jButtonStopAutoFit.setText("stopFit");
+        jButtonStopAutoFit.setActionCommand("forceStopAutoFit");
+
+        jButtonRefresh.setBackground(new java.awt.Color(71, 73, 75));
+        jButtonRefresh.setForeground(new java.awt.Color(204, 204, 204));
+        jButtonRefresh.setText("RELOAD");
+        jButtonRefresh.setActionCommand("reload");
+
+        jButtonZoomOut.setBackground(new java.awt.Color(71, 73, 75));
+        jButtonZoomOut.setForeground(new java.awt.Color(204, 204, 204));
+        jButtonZoomOut.setText("zomOut");
+        jButtonZoomOut.setActionCommand("forceZoomOut");
+        jButtonZoomOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonZoomOutActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonZoomOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonStopAutoFit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButtonStopAutoFit)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonZoomOut, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -126,51 +302,102 @@ public class ControlPane extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButtonPrevStep, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
-                .addComponent(jButtonNextStep, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonPrevStep, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonNextStep, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonPrevStep, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
-                    .addComponent(jButtonNextStep, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButtonNextStep, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButtonPrevStep, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
+            .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        jButtonRunAutomata.setText("RUN");
+        jPanel3.setBackground(new java.awt.Color(204, 255, 255));
+
+        jButtonShowFinalSolution.setBackground(new java.awt.Color(71, 73, 75));
+        jButtonShowFinalSolution.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButtonShowFinalSolution.setForeground(new java.awt.Color(204, 204, 204));
+        jButtonShowFinalSolution.setText("Direct Mode");
+        jButtonShowFinalSolution.setActionCommand("ShowFinalSolution");
+
+        jButtonRunAutomata.setBackground(new java.awt.Color(71, 73, 75));
+        jButtonRunAutomata.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButtonRunAutomata.setForeground(new java.awt.Color(204, 204, 204));
+        jButtonRunAutomata.setText("Step by Step Mode");
         jButtonRunAutomata.setActionCommand("runAutomata");
+        jButtonRunAutomata.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRunAutomataActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonShowFinalSolution, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonRunAutomata, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButtonShowFinalSolution, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonRunAutomata, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jButtonLoadAutomataFromFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonRunAutomata, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+            .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonLoadAutomataFromFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonRunAutomata, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -180,19 +407,50 @@ public class ControlPane extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonNextStepActionPerformed
 
+    private void jButtonLoadAutomataFromFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoadAutomataFromFileActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonLoadAutomataFromFileActionPerformed
+
+    private void jButtonZoomOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonZoomOutActionPerformed
+        // TODO add your hjButtonZoomOutcode here:
+    }//GEN-LAST:event_jButtonZoomOutActionPerformed
+
+    private void jButtonRunAutomataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRunAutomataActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonRunAutomataActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton jButtonHelp;
     public javax.swing.JButton jButtonLoadAutomataFromFile;
     public javax.swing.JButton jButtonNextStep;
     public javax.swing.JButton jButtonPrevStep;
+    public javax.swing.JButton jButtonRefresh;
     public javax.swing.JButton jButtonRunAutomata;
+    public javax.swing.JButton jButtonShowFinalSolution;
+    public javax.swing.JButton jButtonStopAutoFit;
+    public javax.swing.JButton jButtonZoomOut;
+    public javax.swing.JDialog jDialogHelp;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     public javax.swing.JTextPane jTextFieldCommandInput;
+    public javax.swing.JTextPane jTextPane1;
     // End of variables declaration//GEN-END:variables
 
 
+    /**
+     * SETs a JFrame location to the center top right position of the window.
+     * (fromInternet) [SOURCE]: https://stackoverflow.com/questions/50498314/how-can-i-set-jframe-location-at-right-of-screen
+     * 
+     * @param frame  JFrame to modify its location in the window.
+     */
     public static void setLocationToTopRight(JFrame frame) {
         GraphicsConfiguration config = frame.getGraphicsConfiguration();
         Rectangle bounds = config.getBounds();
@@ -203,7 +461,12 @@ public class ControlPane extends javax.swing.JFrame {
         frame.setLocation(x, y);
     }
     
-    // (fromInternet) [SOURCE]: https://stackoverflow.com/questions/50498314/how-can-i-set-jframe-location-at-right-of-screen
+    /**
+     * SETs a JFrame location to the center left position of the window.
+     * (fromInternet) [SOURCE]: https://stackoverflow.com/questions/50498314/how-can-i-set-jframe-location-at-right-of-screen
+     * 
+     * @param frame  JFrame to modify its location in the window.
+     */
     public static void setLocationToCenterLeft(JFrame frame) {
         GraphicsConfiguration config = frame.getGraphicsConfiguration();
         Rectangle bounds = config.getBounds();
@@ -216,4 +479,27 @@ public class ControlPane extends javax.swing.JFrame {
     }
     
 
+    /**
+     * Static method that grants support for a popup messagethat is displayed in case of error or warning during the program execution.
+     * 
+     * @param parentComponent determines the <code>Frame</code>
+     *          in which the dialog is displayed; if <code>null</code>,
+     *          or if the <code>parentComponent</code> has no
+     *          <code>Frame</code>, a default <code>Frame</code> is used
+     * @param windowMsg the title string for the dialog
+     * @param bodyMsg the <code>Object</code> to display
+     * @param msgType the type of message to be displayed:
+     *                  <code>ERROR_MESSAGE</code>,
+     *                  <code>INFORMATION_MESSAGE</code>,
+     *                  <code>WARNING_MESSAGE</code>,
+     *                  <code>QUESTION_MESSAGE</code>,
+     *                  or <code>PLAIN_MESSAGE</code>
+     * @see JOptionPane#showMessageDialog(java.awt.Component, java.lang.Object, java.lang.String, int) 
+     * @see Controlador.ControladorAutomata
+     */
+    //msgType: [EJ] JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION, ....
+    public static void showPopUp(Component parentComponent, String windowMsg, String bodyMsg, int msgType){      
+        JOptionPane.showMessageDialog(parentComponent, bodyMsg, windowMsg, msgType);
+    }
+    
 }

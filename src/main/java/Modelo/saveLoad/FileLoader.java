@@ -9,27 +9,83 @@ import Modelo.AutomataNoDeterminista;
 import Modelo.Interfaces.AbstractAutomata;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashSet;
+import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
 
 /**
- *
+ * Loads an {@link Modelo.AutomataDeterminista} or an {@link Modelo.AutomataNoDeterminista}
+ * 
  * @author Jtorr
  */
-public class FileLoader {
-    private final String DATASET_ABSOLUTE_PATH = this.getClass().getProtectionDomain().getCodeSource().getLocation().toString().split("/target/classes/")[0].split("file:/")[1].replace("/", "\\")+"\\src\\main\\java\\dataset\\";
-
-    private static final String SPACE_REGREX = "(?= )";
+public class FileLoader {       
+    /**
+     * The name folder of the dataset (where the automata's are stored).
+     */
+    private final String DATASET_FOLDER_NAME = "dataSetFinal_V2"; //"dataSetFinal"; // "dataset_FINAL";
+    /**
+     * Absolute path of the folder that contains the {@link #DATASET_FOLDER_NAME}
+     */
+    private final String DATASET_ABSOLUTE_PATH = this.getClass().getProtectionDomain().getCodeSource().getLocation().toString().split("/target/classes/")[0].split("file:/")[1].replace("/", "\\").replace("%20"," ")+"\\src\\main\\java\\"+DATASET_FOLDER_NAME+"\\";
+    //private final String DATASET_ABSOLUTE_PATH = this.getClass().getProtectionDomain().getCodeSource().getLocation().toString().split("/target/classes/")[0].split("file:/")[1].replace("/", "\\").replace("%20"," ")+"\\src\\main\\java\\dataset\\";
 
     
+    /**
+     * Space regexp 
+     */
+    public static final String SPACE_REGEX = "(?= )";
+
+    // File flags (the file should have that flag order)
+    /**
+     * Flag that determines the type of the automata: 
+     *  - 'AFND' {@link Modelo.AutomataNoDeterminista}
+     *  - 'AFD' {@link Modelo.AutomataDeterminista}
+     */
+    public static final String DELIMITER__TIPO_AUTOMATA = "TIPO:"; 
+    /**
+     * An optiona flag to write some extra information about the automata
+     */
+    public static final String DELIMITER__INFO_AUTOMATA = "INFO:";
+    @Deprecated
+    public static final String DELIMITER__NUM_STATES = "ESTADOS:";
+    /**
+     * Flag that contains the {@link Modelo.Interfaces.Transaction#initialState}
+     */
+    public static final String DELIMITER__INITIAL_STATES = "INICIAL:";
+    /**
+     * Flag that contains the {@link Modelo.Interfaces.Transaction#finalStates}
+     * (ONLY THE AFND CAN HAVE MORE THAN ONE FINAL_STATE)
+     */
+    public static final String DELIMITER__FINAL_STATES = "FINALES:";
+    /**
+     * Flag that contains the {@link Modelo.Interfaces.Transaction}'s of the automata.
+     * 
+     * [FORMAT]:
+     * - Normal Transaction ==> initialNode [commandOrSymbol] finalNode
+     * - Lambda Transaction ==> initialNode lambdaNode
+     */
+    public static final String DELIMITER__START_TRANSACTIONS = "TRANSICIONES:";
+    /**
+     * Flag that mark the end of the file.
+     */
     public static final String DELIMITER__END_OF_FILE = "FIN";
-    private static final String CHAR_REGREX = "(?=('\\w'))"; // Funciona??
+        
+
+    /**
+     * Stores the last loaded file in order to execute the {@link #reloadAutomata() } method.
+     */
+    private File previouslyLoadedFile = null;
     
     
-     // chooseFile (pop-up sindow) [getter]
-    public File chooseFile(){
+    /**
+     * Open a popUp Window that let you to choose a file (witch must represent an {})
+     * @return the choosed file or {@code null} if no file has choosed
+     * 
+     * // TODO
+     * @version 2: Traduce el fichero usando el 'FileInterpreter' al formato que el 'genAutomataFromFile()' es capas de leer.
+     */
+    public File chooseFile() throws IOException{
         File choosedFile = null;
         
         JFileChooser fileChooser = new JFileChooser();
@@ -39,68 +95,28 @@ public class FileLoader {
             choosedFile = new File(fileChooser.getSelectedFile().getAbsolutePath());                                                        
         }         
         
+        // Crea un fichero temporal en el formato valido del 'FileLoader' 
+        choosedFile = FileFormatTranslator.translate(choosedFile);
+        
+        
         return choosedFile;
     }    
     
     
     
-    /* 
-    public Punto[] extractPointsFromFile(File fileX) throws FileNotFoundException,NoSuchElementException{
-        Scanner scannerX = new Scanner(fileX);
-        String lineX = scannerX.nextLine();
-
-        Punto pointList[] = null;
-        boolean startSavingPoints = false;    
-        int pointIndex = 0;
-        int numPoints = 0; //DIMENSION
-        while(scannerX.hasNext() && lineX!=DELIMITER__END_OF_FILE){
-            if (lineX.contains(DELIMITER__NUM_POINTS)){
-                String lineData[] = lineX.trim().split(SPACE_REGREX);
-                numPoints = Integer.parseInt(lineData[lineData.length-1].trim());
-            }
-            
-            if(startSavingPoints == true){
-                if (pointList==null) {pointList = new Punto[numPoints];  }
-                                                    
-
-                String[] rawData = lineX.trim().split(SPACE_REGREX);
-                String pointName = rawData[0].trim();
-                double coordX = Double.parseDouble(rawData[rawData.length-2].trim());
-                double coordY = Double.parseDouble(rawData[rawData.length-1].trim());
-
-                Punto pointX = new Punto(pointName,coordX, coordY);
-                pointList[pointIndex]= pointX;                                   
-                pointIndex++;
-            }
-            
-            if (lineX.compareTo(DELIMITER__START_POINTS) == 0) { startSavingPoints = true; }
-            
-            lineX = scannerX.nextLine();                     
-        }
-        
-    
-       return pointList;
-    }
-*/
-    
-    
-        private static final String DELIMITER__TIPO_AUTOMATA = "TIPO:"; //AFND(AutamtaNoDeterminista) ; AFD (AutomataDeterminista)
-    private static final String DELIMITER__NUM_STATES = "ESTADOS:";
-    private static final String DELIMITER__INITIAL_STATES = "INICIAL:";
-    private static final String DELIMITER__FINAL_STATES = "FINALES:";
-    private static final String DELIMITER__START_TRANSACTIONS = "TRANSICIONES:";
-    
     /**
-     * TODO-DONE [ASK-TEACHER]: Como diferenciar un automataDeterminista de uno no determinista en el fichero a importar??? 
-     * IMPORTANTE: Por ahora, solo genera 'AutomataDeterminista's .
-     * IMPORTANTE [DESIGN-DESITION]: Los automatas no pueden instanciar nodos por separado; solo {@link Modelo.Interfaces.Transaction}'s
+     * Read an automata (.txt) and generactes an {@link AutomataNoDeterminista}  o an {@link AutomataNoDeterminista}
+     * @param fileX The file that contains the autoamta
      * 
-     * @param fileX
-     * @return {@link AbstractAutomata}
-     * @throws FileNotFoundException
-     * @throws NoSuchElementException 
+     * @return An {@link AutomataNoDeterminista} or an {@link AutomataNoDeterminista}
+     * @throws FileNotFoundException err
+     * @throws NoSuchElementException err
+     * @see Controlador.ControladorAutomata#actionPerformed(java.awt.event.ActionEvent) 
      */
     public AbstractAutomata genAutomataFromFile(File fileX) throws FileNotFoundException,NoSuchElementException{
+        this.previouslyLoadedFile = fileX;
+
+        
         Scanner scannerX = new Scanner(fileX);
         String lineX = scannerX.nextLine();
 
@@ -131,7 +147,7 @@ public class FileLoader {
 
                 if(startSavingTransactions == true){                     
                     // [TRANSACTION-FORMAT]:= [EJ] q0 '0' q1 <===> <initialState, command, finalState>
-                    String[] rawData = lineX.trim().split(SPACE_REGREX);
+                    String[] rawData = lineX.trim().split(SPACE_REGEX);
 
                     switch(rawData.length){
 
@@ -157,17 +173,17 @@ public class FileLoader {
                     }
                 }
                 else{
-                    if (lineX.contains(DELIMITER__NUM_STATES)){
-                        statesList = lineX.trim().split(DELIMITER__NUM_STATES)[1].split(SPACE_REGREX);                      
+                    if (lineX.contains(DELIMITER__INFO_AUTOMATA)){
+                        System.out.println("INFO: "+ lineX.trim().split(DELIMITER__INFO_AUTOMATA)[1]);
                     }
                     else if (lineX.contains(DELIMITER__INITIAL_STATES)){
-                        String initialStates[] = lineX.trim().split(DELIMITER__INITIAL_STATES)[1].split(SPACE_REGREX);                      
+                        String initialStates[] = lineX.trim().split(DELIMITER__INITIAL_STATES)[1].split(SPACE_REGEX);                      
                         for(String initialStateX:initialStates){
                             automataX.addInitialState(initialStateX.trim());
                         }
                     }        
                     else if (lineX.contains(DELIMITER__FINAL_STATES)){
-                        String finalStates[] = lineX.trim().split(DELIMITER__FINAL_STATES)[1].split(SPACE_REGREX);                      
+                        String finalStates[] = lineX.trim().split(DELIMITER__FINAL_STATES)[1].split(SPACE_REGEX);                      
                         for(String initialStateX:finalStates){
                             automataX.addFinalState(initialStateX.trim());
                         }
@@ -185,6 +201,16 @@ public class FileLoader {
        return automataX;
     }
     
-    
+    /**
+     * Reload previously loaded automata 
+     * 
+     * @return An {@link AutomataNoDeterminista} or an {@link AutomataNoDeterminista}
+     * @throws FileNotFoundException err
+     * @see #genAutomataFromFile(java.io.File) 
+     * @see #previouslyLoadedFile
+     */
+    public AbstractAutomata reloadAutomata() throws FileNotFoundException{
+        return genAutomataFromFile(this.previouslyLoadedFile);
+    }
 
 }

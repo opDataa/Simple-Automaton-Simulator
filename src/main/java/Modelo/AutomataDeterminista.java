@@ -11,21 +11,29 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Represents an 'Automata Final Determinista' (AFD)
+ * 
+ * SPECIFICATIONS:
+ *  - One initialState (UNIQUE RESTRAINT: {initialState, command})
+ *  - One or more finalStates
  * @author Jtorr
  */
-// One initialState; One o more finalStates; UNIQUE RESTRAINT: <initialState, command>.
-public class AutomataDeterminista extends AbstractAutomata {
+public class AutomataDeterminista extends AbstractAutomata{
+     
     
-   
-    
-    
+    /**
+     * Constructor
+     */
+    public AutomataDeterminista(){
+        super();
+    }
     
     @Override
     protected boolean validate(String inputString) {
         char[ ] commands = inputString.toCharArray();      
         final String initialState = this.getInitialState();  
         String stateX = initialState; //int estado = 0 ; //El estado inicial es el 0
+        
         //System.out.println("inputString: "+inputString);
         //System.out.print("-->"+stateX);
 
@@ -33,19 +41,23 @@ public class AutomataDeterminista extends AbstractAutomata {
         // A[C]B
         
 
-
         super.addOperation(stateX); // A
+
         for(int i=0; i<commands.length; i++) {     
-            
+            final int INPUT_LENGTH = commands.length-i;
+            String auxState = stateX;
             stateX = this.getNextState(stateX,commands[i]);
-            super.addOperation("["+commands[i]+"]"); // [C]
             if(stateX==null){
                 super.addOperation(OPERATION_CODE__COMMAND_INVALID); // {CX}
-
                 break;
             }
             else{ 
+                
+                super.addOperation_transactionCommand(commands[i]); //super.addOperation("["++"]");  // [C]
                 super.addOperation(stateX);    // B/A
+                
+                super.updateFinalSolution(INPUT_LENGTH,auxState+" "+"["+commands[i]+"]"+" "+stateX); // TODO: VER SI FUNCIONA BIEN ?? ASDF
+
             }                               
         }
         
@@ -55,10 +67,9 @@ public class AutomataDeterminista extends AbstractAutomata {
         
         return isValid;
     }
+     
     
-    
-    
-    // UTIL --------------------------------------------------------------------   
+    // GETTERs -----------------------------------------------------------------   
     /**
      * GETs the 'initialState'. It is the first state during {@link validate}.
      * Since the {@link AutomataDeterminista} can only have one 'initialState', we return the 'first-saved-elem' from the {@link Transaction#initialState}.
@@ -82,14 +93,16 @@ public class AutomataDeterminista extends AbstractAutomata {
         if (nextStates!=null){ nextState = nextStates.iterator().next(); }
         
         return nextState;
-    }   
+    }
     
+    // SETTERs -----------------------------------------------------------------
     /**
+     * INIT and SETs a {@link Transaction}
      * Throws an error in case you try to add more than one {@link Transaction} per {@link Transaction#command}.
-     * @param initialState
-     * @param command
-     * @param nextState
-     * @return 
+     * @param initialState The starting state of the {@link  Transaction#initialState}
+     * @param command The command of the {@link  Transaction#command}
+     * @param nextState The final state of the {@link  Transaction#finalStates}
+     * @return {link AbstractAutomata#addTransaction(java.lang.String, java.lang.Character, java.lang.String) }
      */
     @Override
     public boolean addTransaction(String initialState, Character command, String nextState){
@@ -102,8 +115,6 @@ public class AutomataDeterminista extends AbstractAutomata {
 
         return alreadyExistedTransaction;
     }
-
-  
 }
 
 
