@@ -5,7 +5,7 @@
 ## Descripción
 El proyecto Simple-Automaton-Simulator es una implementación de un simulador de autómatas finitos deterministas (DFA) y no deterministas (NFA). La arquitectura del proyecto sigue el patrón de diseño Modelo-Vista-Controlador (MVC) para una mejor organización y mantenimiento del código.
 
-Para una comprensión más detallada de su funcionamiento, consulte el [SAS-Reference.pdf](SAS-Reference.pdf) .
+Para una comprensión más detallada de su funcionamiento, consulte el [SAS-Reference.pdf](SAS_Reference.pdf) .
 
 ## Características
 
