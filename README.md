@@ -5,6 +5,8 @@
 ## Descripción
 El proyecto Simple-Automaton-Simulator es una implementación de un simulador de autómatas finitos deterministas (DFA) y no deterministas (NFA). La arquitectura del proyecto sigue el patrón de diseño Modelo-Vista-Controlador (MVC) para una mejor organización y mantenimiento del código.
 
+Para una comprensión más detallada de su funcionamiento, consulte el [SAS-Reference.pdf](ruta/al/pdf/SAS-Reference.pdf) .
+
 ## Características
 
 ### Modelado de Autómatas
@@ -15,6 +17,10 @@ El proyecto Simple-Automaton-Simulator es una implementación de un simulador de
 
 ### Vista
 - **ControlPane.java**: Panel de control que incluye un campo de texto para entrada y botones para manipular la visualización del autómata.
+  
+<p align="center">
+  <img width="363" alt="ui automaton" src="https://github.com/opDataa/Simple-Automaton-Simulator/assets/62800196/c43bb32c-3492-474e-aa8c-7a855675083d">
+</p>
 
 ### Controlador
 - **ControladorTextInput.java**: Gestiona la entrada de texto y su visualización durante el modo "paso a paso".
